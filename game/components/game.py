@@ -1,5 +1,6 @@
 import pygame
 from game.components.spaceship import Spaceship
+from game.components.enemys import Enemy
 
 # game.utils.constants -> es un modulo donde tengo "objetos" en memoria como el BG (background)...etc
 #   tambien tenemos valores constantes como el title, etc
@@ -19,6 +20,8 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.spaceship = Spaceship()
+        self.enemy = Enemy()
+
     # este es el "game loop"
     # # Game loop: events - update - draw
     def run(self):
@@ -45,6 +48,7 @@ class Game:
     def update(self):
         keys = pygame.key.get_pressed()
         self.spaceship.update(keys)
+       # self.enemy.update(keys)
     # este metodo "dibuja o renderiza o refresca mis cambios en la pantalla del juego"
     # aca escribo ALGO de la logica "necesaria" -> repartimos responsabilidades entre clases
     # o sea aqui deberia llamar a los metodos "draw" de mis otros objetos
@@ -54,6 +58,7 @@ class Game:
         self.screen.fill((255, 255, 255)) # esta tupla (255, 255, 255) representa un codigo de color: blanco
         self.draw_background()
         self.spaceship.draw(self.screen)
+        self.enemy.draw(self.screen)     #____enemys
         pygame.display.update()
         pygame.display.flip()
         
