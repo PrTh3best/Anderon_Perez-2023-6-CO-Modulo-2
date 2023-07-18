@@ -20,7 +20,8 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.spaceship = Spaceship()
-        self.enemy = Enemy()
+        self.enemy = Enemy("label")
+        
 
     # este es el "game loop"
     # # Game loop: events - update - draw
@@ -58,7 +59,7 @@ class Game:
         self.screen.fill((255, 255, 255)) # esta tupla (255, 255, 255) representa un codigo de color: blanco
         self.draw_background()
         self.spaceship.draw(self.screen)
-        self.enemy.draw(self.screen)     #____enemys
+        self.enemy.draw(self.screen)    #____enemys
         pygame.display.update()
         pygame.display.flip()
         
