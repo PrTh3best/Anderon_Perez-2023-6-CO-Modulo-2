@@ -20,6 +20,7 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.playing = False
+        self.running = False
         self.game_speed = 10
         self.x_pos_bg = 0
         self.y_pos_bg = 0
@@ -33,17 +34,11 @@ class Game:
     # este es el "game loop"
     # # Game loop: events - update - draw
     def run(self):
-        self.playing = True
-        while self.playing:
-            print(f"I am still in the game loop")
-            self.handle_events()
+        self.running = True
+        while self.running:
+            self.events()
             self.update()
             self.draw()
-            pygame.display.quit()
-            pygame.quit()
-        
-        else:
-            print(f"game is over because self.playing is", self.playing)
         pygame.display.quit()
         pygame.quit()
 
@@ -51,7 +46,7 @@ class Game:
         # esta expression es la llamada a un metodo pygame.event.get() que devuelve un "iterable"
         for event in pygame.event.get(): # con el for sacamos cada evento del "iterable"
             if event.type == pygame.QUIT: # pygame.QUIT representa la X de la ventana
-                self.playing = False
+                self.running = False
                 self.playing = False
             elif event.type == pygame.KEYDOWN and not self.playing:
                 self.playing = True

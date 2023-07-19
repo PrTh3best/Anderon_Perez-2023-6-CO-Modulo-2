@@ -1,61 +1,63 @@
 import pygame
-import game
-from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, HEART, BULLET_ENEMY, FONT_STYLE
+from game.utils.constants import SPACESHIP, SPACESHIP_SHIELD, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_SPACESHIP_TYPE
+from game.components.power_ups.shield import Shield
 
 class Spaceship:
-    def __init__(self, label):
-        super(Spaceship, self).__init__()
-        self.type = "player"
-        self.spaceship = SPACESHIP 
-        self.spaceship = pygame.transform.scale(self.spaceship,(40, 35))
-        self.spaceship_rect = self.spaceship.get_rect()
-        self.spaceship_rect.x, self.spaceship_rect.y = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
-        self.label = FONT_STYLE.render(f'PLAYER: {label}', True, (12, 159, 254))
-        self.BULLET_ENEMYs = []
-        self.buller_counter = 0
-        self.update_counter_text()
+    WIDTH = 40
+    HEIGTH = 60
+    X_POS = (SCREEN_WIDTH // 2) - 40
+    Y_POS = 500
 
-    
-    def move_up(self):
-        if self.spaceship_rect.top > 0:
-            self.spaceship_rect.top -= 15
+    def __init__(self):
+        self.image = SPACESHIP
+        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGTH))
+          #  self.label = FONT_STYLE.render(f'xwing: {label}', True, (12, 159, 254))
+        self.rect = self.image.get_rect()
+        self.rect.x = self.X_POS
+        self.rect.y = self.Y_POS
+        self.is_alive = True
+        self.has_shield = False
+        self.time_up = 0
 
-    def move_down(self):
-        if self.spaceship_rect.bottom  < 0: 
-            self.spaceship_rect.bottom += 15
-
-    def move_left(self):
-        if self.spaceship_rect.left > 0: 
-            self.spaceship_rect.left -= 15
-    def move_rigth(self):
-        if self.spaceship_rect.right > 0:
-            self.spaceship_rect.right += 15
-
-    def shoot(self, bullet_handler):
-        bullet_handler.add_bullet(BULLET_ENEMY, self.rect.center)
-
-    def update(self, key):
-        if key[pygame.K_UP]:
-            self.move_up()
-        if key[pygame.K_DOWN]:
-            self.move_down()
-        if key[pygame.K_LEFT]:
+    def update(self, user_input, bullet_handler):
+        if user_input[pygame.K_LEFT]:
             self.move_left()
-        if key[pygame.K_RIGHT]:
-            self.move_rigth()
-        elif key[pygame.K_SPACE]:
-            self.shoot(game)
+        elif user_input[pygame.K_RIGHT]:
+            self.move_right()
+        elif user_input[pygame.K_UP]:
+            self.move_up()
+        elif user_input[pygame.K_DOWN]:
+            self.move_down()
+        elif user_input[pygame.K_SPACE]:
+            self.shoot(bullet_handler)
         
-        
-
-
+        if self.has_shield:
+            time_to_show = round((self.time_up - pygame.time.get_ticks())/1000, 2)
+            if time_to_show < 0:
+                self.deactivate_power()
 
     def draw(self, screen):
-        screen.blit(self.spaceship, (self.spaceship_rect.x, self.spaceship_rect.y))
-        font = pygame.font.font(None, 20) #selecciona la fuente y tamaño
-        label = font.render(self.name, True, (255, 255, 255))
-        screen.blit(label, (self.spaceship_rect.x, self.spaceship_rect.y - 20))
+        screen.blit(self.image, self.rect)
 
+    def move_left(self):
+        if self.rect.left > 0:
+            self.rect.x -= 10
+
+    def move_right(self):
+        if self.rect.right < SCREEN_WIDTH:
+            self.rect.x += 10
+
+    def move_up(self):
+        if self.rect.y > SCREEN_HEIGHT // 2:
+            self.rect.y -= 10
+    
+    def move_down(self):
+        if self.rect.y < SCREEN_HEIGHT - 70:
+            self.rect.y += 10
+    
+    def shoot(self, bullet_handler):
+        bullet_handler.add_bullet(BULLET_SPACESHIP_TYPE, self.rect.center)
+    
     def reset(self):
         self.image = SPACESHIP
         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGTH))
