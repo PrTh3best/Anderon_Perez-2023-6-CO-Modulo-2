@@ -23,8 +23,12 @@ class Game:
         self.game_speed = 10
         self.x_pos_bg = 0
         self.y_pos_bg = 0
-        self.spaceship = Spaceship("player")
-
+        self.player = Spaceship()
+        self.enemy_handler = EnemyHandler()
+        self.bullet_handler = BulletHandler()
+        self.power_up_handler = PowerUpHandler()
+        self.score = 0
+        self.number_death = 0
         
     # este es el "game loop"
     # # Game loop: events - update - draw
@@ -118,6 +122,16 @@ class Game:
         # No hay una velocidad de juego como tal, el "game_speed" simplemente me indica
         # cuanto me voy a mover (cuantos pixeles hacia arriba o abajo) cen el eje Y
         self.y_pos_bg += self.game_speed
+
+    def draw_menu(self):
+        if self.number_death == 0:
+            text, text_rect = text_utils.get_message('Press any Key to Start', 30, WHITE_COLOR)
+            self.screen.blit(text, text_rect)
+        else:
+            text, text_rect = text_utils.get_message('Press any Key to Restart', 30, WHITE_COLOR)
+            score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, WHITE_COLOR, height=SCREEN_HEIGHT//2 +50)
+            self.screen.blit(text, text_rect)
+            self.screen.blit(score, score_rect)
     
     def draw_score(self):
         score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 20, WHITE_COLOR, 1000, 40)

@@ -1,6 +1,6 @@
 import pygame
 import game
-from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, HEART, BULLET, FONT_STYLE
+from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, HEART, BULLET_ENEMY, FONT_STYLE
 
 class Spaceship:
     def __init__(self, label):
@@ -10,10 +10,10 @@ class Spaceship:
         self.spaceship = pygame.transform.scale(self.spaceship,(40, 35))
         self.spaceship_rect = self.spaceship.get_rect()
         self.spaceship_rect.x, self.spaceship_rect.y = (SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
-       # self.label = FONT_STYLE.render(f'PLAYER: {label}', True, (12, 159, 254))
-        self.bullets = []
+        self.label = FONT_STYLE.render(f'PLAYER: {label}', True, (12, 159, 254))
+        self.BULLET_ENEMYs = []
         self.buller_counter = 0
-      #  self.update_counter_text()
+        self.update_counter_text()
 
     
     def move_up(self):
@@ -31,7 +31,8 @@ class Spaceship:
         if self.spaceship_rect.right > 0:
             self.spaceship_rect.right += 15
 
-
+    def shoot(self, bullet_handler):
+        bullet_handler.add_bullet(BULLET_ENEMY, self.rect.center)
 
     def update(self, key):
         if key[pygame.K_UP]:
@@ -54,6 +55,22 @@ class Spaceship:
         font = pygame.font.font(None, 20) #selecciona la fuente y tamaño
         label = font.render(self.name, True, (255, 255, 255))
         screen.blit(label, (self.spaceship_rect.x, self.spaceship_rect.y - 20))
-        
 
-    #def fire_bullet(self):
+    def reset(self):
+        self.image = SPACESHIP
+        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGTH))
+        self.rect.x = self.X_POS
+        self.rect.y = self.Y_POS
+        self.is_alive = True
+
+    def activate_power_up(self, power_up):
+        self.time_up = power_up.time_up
+        if type(power_up) == Shield:
+            self.has_shield = True
+            self.image = SPACESHIP_SHIELD
+            self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGTH))
+
+    def deactivate_power(self):
+        self.has_shield = False
+        self.image = SPACESHIP
+        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGTH))
