@@ -1,12 +1,12 @@
 import pygame, random
-from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, INVISIBLE_PW
 
 class PowerUp:
     WIDTH = 30
     HEIGHT = 30
     POS_Y = 0
     SPEED = 5
-    DURATION = 5000
+    DURATION = 5000 #tiempo en milisegundos
 
     def __init__(self, image):
         self.image = image

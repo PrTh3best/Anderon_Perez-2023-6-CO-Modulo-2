@@ -39,3 +39,4 @@ BLACK_COLOR = (0, 0, 0)
 WHITE_COLOR = (255, 255, 255)
 BULLET_ENEMY_TYPE = 'enemy'
 BULLET_SPACESHIP_TYPE = 'ship'
+INVISIBLE_PW =  pygame.image.load(os.path.join(IMG_DIR, "Spaceship/inv.png"))
