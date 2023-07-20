@@ -5,13 +5,14 @@ from game.components.bullets.bullet_spaceship import BulletSpaceship
 class BulletHandler:
     def __init__(self):
         self.bullets = []
-    
-    def update(self, player, enemies):
+#        # las constantes BULLET_ENEMY y BULLET_ENEMY 
+    def update(self, player, enemies):#Recorre cada bala en la lista bullets
         for bullet in self.bullets:
             if not bullet.is_alive:
-                self.remove_bullet(bullet)
+                self.remove_bullet(bullet)  #RECUERDAA!
             else:
-                if bullet.type == BULLET_ENEMY:
+                if bullet.type == BULLET_ENEMY: #llama al método
+                #update(player) para actualizar su posición según el jugador actual.
                     bullet.update(player)
                 else:
                     for enemy in enemies:
